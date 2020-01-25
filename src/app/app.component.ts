@@ -8,8 +8,8 @@ import { getRandomString } from 'selenium-webdriver/safari';
   styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent extends GameComponent implements AfterViewInit {
-  tileSize = 20;
-  nTiles = 50;
+  tileSize = 10;
+  nTiles = 100;
   mapSize = 16;
 
   width = this.tileSize * this.nTiles;
@@ -19,7 +19,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
   pos = { x: 8, y: 8 };
   pAngle = 0;
-  fov = Math.PI / 4;
+  fov = Math.PI / 3;
 
   velocity = { x: 0, y: 0 };
   step = 40;
@@ -64,8 +64,18 @@ export class AppComponent extends GameComponent implements AfterViewInit {
       .addEventListener('keydown', (event) => {
         switch (event.key) {
           case 'w':
-            this.pos.x += 1 * Math.cos(this.pAngle);
-            this.pos.y += 1 * Math.sin(this.pAngle);
+            const tempX = this.pos.x + 1 * Math.cos(this.pAngle);
+            const tempY = this.pos.y + 1 * Math.sin(this.pAngle);
+            console.log('fail at', tempX, tempY);
+
+            if (tempX < 0 || tempX >= this.mapSize || tempY < 0 || tempY >= this.mapSize) {
+            } else {
+              if (this.map[Math.floor(tempY)][Math.floor(tempX)] !== '#') {
+                this.pos.x = tempX;
+                this.pos.y = tempY;
+              } else {
+              }
+            }
             // this.velocity.y -= this.step;
             // this.velocity.y = this.velocity.y < -this.maxValue ? -this.maxValue : this.velocity.y;
             break;
@@ -112,7 +122,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
       let wallHit = false;
 
       while (!wallHit && distanceToWall < 50) {
-        distanceToWall += 1;
+        distanceToWall += 0.1;
 
         const tileX = Math.floor(this.pos.x + distanceToWall * Math.cos(rayAngle));
         const tileY = Math.floor(this.pos.y + distanceToWall * Math.sin(rayAngle));
@@ -188,7 +198,22 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     this.map.forEach((row, i) => {
       this.renderer.fillText(row, 1, 20 * (i + 1));
     });
+    const px = 9 * this.pos.x;
+    const py = 20 * this.pos.y;
     this.renderer.fillStyle = '#00ff00';
-    this.renderer.fillText('P',9 * this.pos.x, 20 * this.pos.y);
+    this.renderer.fillText('P', 9 * this.pos.x, 20 * this.pos.y);
+    this.renderer.strokeStyle = '#00ff00'
+    this.renderer.fillStyle = '#ff0000';
+    px += 4;
+    py -= 4;
+
+    this.renderer.beginPath();
+    this.renderer.moveTo(px, py);
+    let angle = this.pAngle - (this.fov / 2);
+    this.renderer.lineTo(px + 69 * Math.cos(angle), py + 69 * Math.sin(angle));
+    angle = this.pAngle + ((this.fov) / 2);
+    this.renderer.lineTo(px + 69 * Math.cos(angle), py + 69 * Math.sin(angle));
+    this.renderer.lineTo(px, py);
+    this.renderer.stroke();
   }
 }
