@@ -1,6 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { GameComponent } from '../game-engine/game/game.component';
-import { getRandomString } from 'selenium-webdriver/safari';
 
 @Component({
   selector: 'app-root',
@@ -19,15 +18,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
   pos = { x: 8, y: 8 };
   pAngle = 0;
-  fov = Math.PI / 3;
-
-  velocity = { x: 0, y: 0 };
-  step = 40;
-  friction = 0.9;
-  maxValue = 100;
-
-  counter = 0;
-  stop;
+  fov = Math.PI / 4;
 
   map = [
     '################',
@@ -48,9 +39,13 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     '################',
   ];
 
+  sprite = {
+    x : 5, y : 5, imgId: 'box'
+  };
+
   ngAfterViewInit(): void {
     this.onCreate$.subscribe(this.start);
-    this.stop = this.onUpdate$.subscribe(this.update);
+    this.onUpdate$.subscribe(this.update);
     this.construct(this.width, this.height);
   }
 
@@ -59,15 +54,19 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     // (document.getElementsByTagName('body')[0] as HTMLElement)
     //   .addEventListener('keydown', (event) => {
     //     console.log(event);
-    //   });
+    //   });url
+
+    setTimeout(() => {
+      const img = document.getElementById(this.sprite.imgId);
+      this.renderer.drawImage(img as CanvasImageSource, 10, 10);
+      console.log('loading');
+    }, 3000);
     (document.getElementsByTagName('body')[ 0 ] as HTMLElement)
       .addEventListener('keydown', (event) => {
         switch (event.key) {
           case 'w':
             const tempX = this.pos.x + 1 * Math.cos(this.pAngle);
             const tempY = this.pos.y + 1 * Math.sin(this.pAngle);
-            console.log('fail at', tempX, tempY);
-
             if (tempX < 0 || tempX >= this.mapSize || tempY < 0 || tempY >= this.mapSize) {
             } else {
               if (this.map[Math.floor(tempY)][Math.floor(tempX)] !== '#') {
@@ -76,24 +75,14 @@ export class AppComponent extends GameComponent implements AfterViewInit {
               } else {
               }
             }
-            // this.velocity.y -= this.step;
-            // this.velocity.y = this.velocity.y < -this.maxValue ? -this.maxValue : this.velocity.y;
             break;
           case 'a':
-            this.pAngle = (this.pAngle - 0.5) % (2 * Math.PI);
-            this.velocity.x -= this.step;
-            this.velocity.x = this.velocity.x < -this.maxValue ? -this.maxValue : this.velocity.x;
+            this.pAngle = (this.pAngle - 0.2) % (2 * Math.PI);
             break;
           case 's':
-            // this.pos.x -= 10 * Math.cos(this.pAngle);
-            // this.pos.y -= 10 * Math.sin(this.pAngle);
-            // this.velocity.y += this.step;
-            // this.velocity.y = this.velocity.y > this.maxValue ? this.maxValue : this.velocity.y;
             break;
           case 'd':
-            // this.velocity.x += this.step;
             this.pAngle = (this.pAngle + 0.5) % (2 * Math.PI);
-            // this.velocity.x = this.velocity.x > this.maxValue ? this.maxValue : this.velocity.x;
             break;
         }
       });
@@ -101,14 +90,9 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
   update = (elapsed) => {
     elapsed = elapsed / 1000;
-    // if ( this.counter ++  > 5) {
-    //   this.stop.unsubscribe();
-    //   return;
-    // }
     this.clear();
     this.renderer.fillStyle = '#ffffff';
     this.renderer.fillText('FPS ' + (1 / elapsed).toFixed(2), 100, 10);
-    // this.renderer.fillRect(this.worldCoord(this.pos.x), this.worldCoord(this.pos.y), this.tileSize, this.tileSize);
 
     const gradient = this.renderer.createLinearGradient(0, this.height, 0, this.height / 2);
     gradient.addColorStop(0, 'brown');
@@ -129,53 +113,25 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
         if (tileX < 0 || tileX >= this.mapSize || tileY < 0 || tileY >= this.mapSize) {
           wallHit = true;
-          // console.log('OOB');
         } else {
-          // console.log('checking for ', rayAngle * 180 / Math.PI, tileX, tileY);
           if (this.map[tileY][tileX] === '#') {
             wallHit = true;
-            // console.log('HIT', distanceToWall);
           }
         }
       }
 
       const ceiling = this.height / 2 - (this.height / distanceToWall);
       const floor = this.height - ceiling;
-      // console.log('cf', ceiling, floor);
       this.renderer.fillStyle = this.getColorGradient(distanceToWall);
-      // console.log(this.getColorGradient(distanceToWall));
       this.renderer.fillRect(this.worldCoord(x), ceiling, this.tileSize, floor - ceiling);
-      // for (let y = 0; y < this.tileSize; y++) {
-      //   if ( y < ceiling ) {
-      //
-      //   } else if (y > floor) {
-      //     this.renderer.fillStyle = '#00ffff';
-      //     this.renderer.fillRect(this.localCoord(x), this.localCoord(y), this.tileSize, this.tileSize);
-      //   } else {
-      //
-      //   }
-      // }
     }
-    // this.pos.x += this.velocity.x * elapsed;
-    // this.pos.y += this.velocity.y * elapsed;
-    //
-    // this.velocity.x *= this.friction;
-    // this.velocity.y *= this.friction;
-    //
-    // this.pos.x += 90 * elapsed;
-    // this.pos.y += 90 * elapsed;
-    // this.pos.x = this.pos.x > this.width ? 0 : this.pos.x;
-    // this.pos.y = this.pos.y > this.height ? 0 : this.pos.y;
     this.drawMap();
   }
 
 
   getColorGradient(distance) {
     const maxDistance = this.mapSize;
-    // console.log(distance);
     const gradient = 16 - Math.floor((distance / maxDistance) * 15);
-    // gradient = 5;
-    // console.log(gradient.toString(16));
     return `#${gradient.toString(16)}${gradient.toString(16)}${gradient.toString(16)}`;
   }
 
@@ -198,8 +154,8 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     this.map.forEach((row, i) => {
       this.renderer.fillText(row, 1, 20 * (i + 1));
     });
-    const px = 9 * this.pos.x;
-    const py = 20 * this.pos.y;
+    let px = 9 * this.pos.x;
+    let py = 20 * this.pos.y;
     this.renderer.fillStyle = '#00ff00';
     this.renderer.fillText('P', 9 * this.pos.x, 20 * this.pos.y);
     this.renderer.strokeStyle = '#00ff00'
