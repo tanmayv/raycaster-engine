@@ -25,12 +25,12 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     '#00000000000000#',
     '#000000###00000#',
     '#00000000000000#',
-    '#0#000000000000#',
-    '#0#000000000000#',
-    '#0#000000000000#',
-    '#0#000000000000#',
-    '#0#000000000000#',
-    '#0#000000000000#',
+    '#00000000000000#',
+    '#00000000000000#',
+    '#00000000000000#',
+    '#00##0000000000#',
+    '#00####00000000#',
+    '#00#####0000000#',
     '#00000000000000#',
     '#0000000000#000#',
     '#000000000#0000#',
@@ -39,9 +39,10 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     '################',
   ];
 
-  sprite = {
-    x : 5, y : 5, imgId: 'box'
-  };
+  sprites = [{
+    x : 8, y : 5, imgId: 'box',
+    scale: 0.3, resolution: 2
+  }];
 
   ngAfterViewInit(): void {
     this.onCreate$.subscribe(this.start);
@@ -56,11 +57,6 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     //     console.log(event);
     //   });url
 
-    setTimeout(() => {
-      const img = document.getElementById(this.sprite.imgId);
-      this.renderer.drawImage(img as CanvasImageSource, 10, 10);
-      console.log('loading');
-    }, 3000);
     (document.getElementsByTagName('body')[ 0 ] as HTMLElement)
       .addEventListener('keydown', (event) => {
         switch (event.key) {
@@ -77,12 +73,12 @@ export class AppComponent extends GameComponent implements AfterViewInit {
             }
             break;
           case 'a':
-            this.pAngle = (this.pAngle - 0.2) % (2 * Math.PI);
+            this.pAngle = (this.pAngle - 0.1) % (2 * Math.PI);
             break;
           case 's':
             break;
           case 'd':
-            this.pAngle = (this.pAngle + 0.5) % (2 * Math.PI);
+            this.pAngle = (this.pAngle + 0.1) % (2 * Math.PI);
             break;
         }
       });
@@ -99,6 +95,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     gradient.addColorStop(1, 'black');
     this.renderer.fillStyle = gradient;
     this.renderer.fillRect(0, this.height / 2, this.width, this.height / 2);
+    const floorList = [];
     for (let x = 0; x < this.nTiles; x++) {
       const rayAngle = (this.pAngle - this.fov / 2) + (x / this.nTiles) * this.fov;
 
@@ -122,9 +119,44 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
       const ceiling = this.height / 2 - (this.height / distanceToWall);
       const floor = this.height - ceiling;
+      floorList.push(ceiling);
       this.renderer.fillStyle = this.getColorGradient(distanceToWall);
       this.renderer.fillRect(this.worldCoord(x), ceiling, this.tileSize, floor - ceiling);
     }
+
+    this.sprites.sort((sp1, sp2) => {
+      return Math.pow(sp2.x - this.pos.x, 2) + Math.pow(sp2.y - this.pos.y, 2) -
+        Math.pow(sp2.x - this.pos.x, 2) + Math.pow(sp2.y - this.pos.y, 2);
+    });
+
+    this.sprites.forEach(sprite => {
+      const vx = this.pos.x + Math.cos(this.pAngle);
+      const vy = this.pos.y + Math.sin(this.pAngle);
+      const tx = this.pos.x - sprite.x;
+      const ty = this.pos.y - sprite.y;
+      let dAx = - Math.cos(this.pAngle);
+      let dAy = - Math.sin(this.pAngle);
+      let dBx = - sprite.x + this.pos.x;
+      let dBy = - sprite.y + this.pos.y;
+      let angle = Math.atan2(dAx * dBy - dAy * dBx, dAx * dBx + dAy * dBy);
+
+      if ( angle < this.fov / 2 && angle > -this.fov / 2) {
+        const wx = ((angle + this.fov / 2) / this.fov) * this.width;
+        let startX, startY;
+        let endX, endY;
+        const distance = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
+        startX = this.pos.x + distance * Math.cos(angle);
+        let ceil = this.height / 2 - (this.height / distance);
+        const flr = this.height - ceil;
+        const spriteHeight = flr - ceil;
+        const scaledHeight = spriteHeight * sprite.scale;
+        const scaledWidth = scaledHeight / sprite.resolution;
+        ceil = flr - scaledHeight;
+        this.renderer.fillStyle = 'green';
+        this.renderer.fillRect(wx, ceil, scaledWidth, flr - ceil);
+      }
+      //   (Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2)) * Math.sqrt(Math.pow(vx, 2) + Math.pow(vx, 2)));
+    });
     this.drawMap();
   }
 
@@ -158,6 +190,9 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     let py = 20 * this.pos.y;
     this.renderer.fillStyle = '#00ff00';
     this.renderer.fillText('P', 9 * this.pos.x, 20 * this.pos.y);
+    this.sprites.forEach(sprite => {
+      this.renderer.fillText('E', 9 * sprite.x, 20 * sprite.y);
+    })
     this.renderer.strokeStyle = '#00ff00'
     this.renderer.fillStyle = '#ff0000';
     px += 4;
@@ -170,6 +205,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     angle = this.pAngle + ((this.fov) / 2);
     this.renderer.lineTo(px + 69 * Math.cos(angle), py + 69 * Math.sin(angle));
     this.renderer.lineTo(px, py);
+    this.renderer.lineTo(px + 60 * Math.cos(this.pAngle), py + 60 * Math.sin(this.pAngle))
     this.renderer.stroke();
   }
 }
