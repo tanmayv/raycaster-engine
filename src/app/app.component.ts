@@ -17,8 +17,11 @@ export class AppComponent extends GameComponent implements AfterViewInit {
   renderer: CanvasRenderingContext2D;
 
   pos = { x: 13, y: 15 };
+  velocity = { x: 0, y: 0};
+  friction = 0.8;
   pAngle = 0;
   fov = Math.PI / 4;
+  key = {};
 
   map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -49,12 +52,12 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
   imgDictionary = {};
   sprites = [{
-    x : 9, y : 8, imgId: 'barrel',
+    x : 11, y : 11, imgId: 'barrel',
     scale: 0.5, resolution: 2,
     floorAlign: true
   },
     {
-      x : 18, y : 10, imgId: 'greenlight',
+      x : 18, y : 12, imgId: 'greenlight',
       scale: 0.5, resolution: 2,
       floorAlign: false
     }
@@ -76,41 +79,32 @@ export class AppComponent extends GameComponent implements AfterViewInit {
         this.imgDictionary[sprite.imgId] = img;
       }
     });
-    // (document.getElementsByTagName('body')[0] as HTMLElement)
-    //   .addEventListener('keydown', (event) => {
-    //     console.log(event);
-    //   });url
 
     (document.getElementsByTagName('body')[ 0 ] as HTMLElement)
       .addEventListener('keydown', (event) => {
-        switch (event.key) {
-          case 'w':
-            const tempX = this.pos.x + 1 * Math.cos(this.pAngle);
-            const tempY = this.pos.y + 1 * Math.sin(this.pAngle);
-            if (tempX < 0 || tempX >= this.mapSize || tempY < 0 || tempY >= this.mapSize) {
-            } else {
-              if (this.map[Math.floor(tempY)][Math.floor(tempX)] === 0) {
-                this.pos.x = tempX;
-                this.pos.y = tempY;
-              } else {
-              }
-            }
-            break;
-          case 'a':
-            this.pAngle = (this.pAngle - 0.1) % (2 * Math.PI);
-            break;
-          case 's':
-            break;
-          case 'd':
-            this.pAngle = (this.pAngle + 0.1) % (2 * Math.PI);
-            break;
-        }
+        this.key[event.key] = true;
+      });
+    (document.getElementsByTagName('body')[ 0 ] as HTMLElement)
+      .addEventListener('keyup', (event) => {
+        this.key[event.key] = false;
       });
   }
 
   update = (elapsed) => {
-    elapsed = elapsed / 1000;
     this.clear();
+    this.handleInputs(elapsed);
+    const tempX = this.pos.x + this.velocity.x;
+    const tempY = this.pos.y + this.velocity.y;
+    if (tempX < 0 || tempX >= this.mapSize || tempY < 0 || tempY >= this.mapSize) {
+    } else {
+      if (this.map[Math.floor(tempY)][Math.floor(tempX)] === 0) {
+        this.pos.x = tempX;
+        this.pos.y = tempY;
+      } else {
+      }
+    }
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
     this.renderer.fillStyle = '#ffffff';
     this.renderer.fillText('FPS ' + (1 / elapsed).toFixed(2), 100, 10);
 
@@ -277,5 +271,25 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     this.renderer.lineTo(px + 60 * Math.cos(this.pAngle), py + 60 * Math.sin(this.pAngle))
     this.renderer.stroke();
     this.renderer.lineWidth = oldLine;
+  }
+
+  private handleInputs(elapsed) {
+    if (this.key['w']) {
+     this.velocity.x += 1 * Math.cos(this.pAngle) * elapsed / 1000;
+     this.velocity.y += 1 * Math.sin(this.pAngle) * elapsed / 1000;
+    } else {
+      if (this.key['s']) {
+        this.velocity.x -= 1 * Math.cos(this.pAngle) * elapsed / 1000;
+        this.velocity.y -= 1 * Math.sin(this.pAngle) * elapsed / 1000;
+      }
+    }
+
+    if (this.key['a']) {
+      this.pAngle = (this.pAngle - 1 * elapsed / 1000) % (2 * Math.PI);
+    } else {
+      if (this.key['d']) {
+        this.pAngle = (this.pAngle + 1 * elapsed / 1000) % (2 * Math.PI);
+      }
+    }
   }
 }
