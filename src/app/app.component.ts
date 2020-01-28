@@ -9,40 +9,56 @@ import { GameComponent } from '../game-engine/game/game.component';
 export class AppComponent extends GameComponent implements AfterViewInit {
   tileSize = 10;
   nTiles = 100;
-  mapSize = 16;
+  mapSize = 24;
 
   width = this.tileSize * this.nTiles;
   height = this.tileSize * this.nTiles;
 
   renderer: CanvasRenderingContext2D;
 
-  pos = { x: 8, y: 8 };
+  pos = { x: 13, y: 15 };
   pAngle = 0;
   fov = Math.PI / 4;
 
   map = [
-    '################',
-    '#00000000000000#',
-    '#000000###00000#',
-    '#00000000000000#',
-    '#00000000000000#',
-    '#00000000000000#',
-    '#00000000000000#',
-    '#00##0000000000#',
-    '#00####00000000#',
-    '#00#####0000000#',
-    '#00000000000000#',
-    '#0000000000#000#',
-    '#000000000#0000#',
-    '###000000##0000#',
-    '###000000000000#',
-    '################',
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 0, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   ];
 
+  imgDictionary = {};
   sprites = [{
-    x : 8, y : 5, imgId: 'box',
-    scale: 0.3, resolution: 2
-  }];
+    x : 9, y : 8, imgId: 'barrel',
+    scale: 0.5, resolution: 2,
+    floorAlign: true
+  },
+    {
+      x : 18, y : 10, imgId: 'greenlight',
+      scale: 0.5, resolution: 2,
+      floorAlign: false
+    }
+  ];
 
   ngAfterViewInit(): void {
     this.onCreate$.subscribe(this.start);
@@ -52,6 +68,12 @@ export class AppComponent extends GameComponent implements AfterViewInit {
 
   start = () => {
     this.renderer = this.canvas.instance.getContext('2d');
+    this.sprites.forEach(sprite => {
+      if (!this.imgDictionary[sprite.imgId]) {
+        const img = document.getElementById(sprite.imgId);
+        this.imgDictionary[sprite.imgId] = img;
+      }
+    });
     // (document.getElementsByTagName('body')[0] as HTMLElement)
     //   .addEventListener('keydown', (event) => {
     //     console.log(event);
@@ -65,7 +87,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
             const tempY = this.pos.y + 1 * Math.sin(this.pAngle);
             if (tempX < 0 || tempX >= this.mapSize || tempY < 0 || tempY >= this.mapSize) {
             } else {
-              if (this.map[Math.floor(tempY)][Math.floor(tempX)] !== '#') {
+              if (this.map[Math.floor(tempY)][Math.floor(tempX)] === 0) {
                 this.pos.x = tempX;
                 this.pos.y = tempY;
               } else {
@@ -111,7 +133,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
         if (tileX < 0 || tileX >= this.mapSize || tileY < 0 || tileY >= this.mapSize) {
           wallHit = true;
         } else {
-          if (this.map[tileY][tileX] === '#') {
+          if (this.map[tileY][tileX]  > 0) {
             wallHit = true;
           }
         }
@@ -130,30 +152,29 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     });
 
     this.sprites.forEach(sprite => {
-      const vx = this.pos.x + Math.cos(this.pAngle);
-      const vy = this.pos.y + Math.sin(this.pAngle);
       const tx = this.pos.x - sprite.x;
       const ty = this.pos.y - sprite.y;
-      let dAx = - Math.cos(this.pAngle);
-      let dAy = - Math.sin(this.pAngle);
-      let dBx = - sprite.x + this.pos.x;
-      let dBy = - sprite.y + this.pos.y;
-      let angle = Math.atan2(dAx * dBy - dAy * dBx, dAx * dBx + dAy * dBy);
+      const dAx = - Math.cos(this.pAngle);
+      const dAy = - Math.sin(this.pAngle);
+      const dBx = - sprite.x + this.pos.x;
+      const dBy = - sprite.y + this.pos.y;
+      const angle = Math.atan2(dAx * dBy - dAy * dBx, dAx * dBx + dAy * dBy);
 
       if ( angle < this.fov / 2 && angle > -this.fov / 2) {
         const wx = ((angle + this.fov / 2) / this.fov) * this.width;
-        let startX, startY;
-        let endX, endY;
         const distance = Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2));
-        startX = this.pos.x + distance * Math.cos(angle);
         let ceil = this.height / 2 - (this.height / distance);
         const flr = this.height - ceil;
-        const spriteHeight = flr - ceil;
+        const spriteHeight = this.height - 2 * ceil;
         const scaledHeight = spriteHeight * sprite.scale;
         const scaledWidth = scaledHeight / sprite.resolution;
-        ceil = flr - scaledHeight;
+        if (sprite.floorAlign) {
+          ceil += spriteHeight - scaledHeight;
+        }
+
         this.renderer.fillStyle = 'green';
-        this.renderer.fillRect(wx, ceil, scaledWidth, flr - ceil);
+
+        this.renderer.drawImage(this.imgDictionary[sprite.imgId], wx, ceil, scaledWidth, scaledHeight);
       }
       //   (Math.sqrt(Math.pow(tx, 2) + Math.pow(ty, 2)) * Math.sqrt(Math.pow(vx, 2) + Math.pow(vx, 2)));
     });
@@ -184,7 +205,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
   private drawMap() {
     this.renderer.font = '18px Arial';
     this.map.forEach((row, i) => {
-      this.renderer.fillText(row, 1, 20 * (i + 1));
+      this.renderer.fillText(row.join(''), 1, 20 * (i + 1));
     });
     let px = 9 * this.pos.x;
     let py = 20 * this.pos.y;
