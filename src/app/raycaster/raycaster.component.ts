@@ -16,7 +16,6 @@ export class RaycasterComponent extends GameComponent implements OnInit {
   private tileSize = 10;
   private tileW = 64;
   private tileH = 48;
-  private renderer: CanvasRenderingContext2D;
 
   private map = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

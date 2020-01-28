@@ -16,6 +16,8 @@ export class GameComponent implements OnInit {
   height;
 
   canvas;
+  renderer;
+
   gameLoop: GameLoop;
   onCreate$ = new Subject();
   onUpdate$ = new Subject();
@@ -35,11 +37,14 @@ export class GameComponent implements OnInit {
      this.canvas.instance.width = width;
      this.canvas.instance.height = height;
      this.gameContainer.ref.insert(this.canvas.hostView);
+     this.renderer = this.canvas.instance.getContext('2d');
      this.gameLoop = new GameLoop();
-     this.onCreate$.next();
-     this.gameLoop.start((elapsedTime) => {
-       this.onUpdate$.next(elapsedTime);
-     }, fps);
+     setTimeout(() => {
+       this.onCreate$.next();
+       this.gameLoop.start((elapsedTime) => {
+         this.onUpdate$.next(elapsedTime);
+       }, fps);
+     }, 1);
    } else {
      alert('Err: Cannot create cavas, game container missing!');
    }

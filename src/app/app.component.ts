@@ -7,8 +7,8 @@ import { GameComponent } from '../game-engine/game/game.component';
   styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent extends GameComponent implements AfterViewInit {
-  tileSize = 10;
-  nTiles = 100;
+  tileSize = 8;
+  nTiles = 160;
   mapSize = 24;
 
   width = this.tileSize * this.nTiles;
@@ -60,6 +60,8 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     }
   ];
 
+  wallTexture;
+
   ngAfterViewInit(): void {
     this.onCreate$.subscribe(this.start);
     this.onUpdate$.subscribe(this.update);
@@ -67,7 +69,7 @@ export class AppComponent extends GameComponent implements AfterViewInit {
   }
 
   start = () => {
-    this.renderer = this.canvas.instance.getContext('2d');
+    this.wallTexture = document.getElementById('greystone');
     this.sprites.forEach(sprite => {
       if (!this.imgDictionary[sprite.imgId]) {
         const img = document.getElementById(sprite.imgId);
@@ -118,14 +120,16 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     this.renderer.fillStyle = gradient;
     this.renderer.fillRect(0, this.height / 2, this.width, this.height / 2);
     const floorList = [];
+    let hitOffSetX;
     for (let x = 0; x < this.nTiles; x++) {
       const rayAngle = (this.pAngle - this.fov / 2) + (x / this.nTiles) * this.fov;
 
       let distanceToWall = 0;
       let wallHit = false;
-
+      let sampleX;
+      let hitY = true;
       while (!wallHit && distanceToWall < 50) {
-        distanceToWall += 0.1;
+        distanceToWall += 0.01;
 
         const tileX = Math.floor(this.pos.x + distanceToWall * Math.cos(rayAngle));
         const tileY = Math.floor(this.pos.y + distanceToWall * Math.sin(rayAngle));
@@ -135,6 +139,32 @@ export class AppComponent extends GameComponent implements AfterViewInit {
         } else {
           if (this.map[tileY][tileX]  > 0) {
             wallHit = true;
+
+            const midX = tileX + 0.5;
+            const midY = tileY + 0.5;
+
+            const testX = this.pos.x + distanceToWall * Math.cos(rayAngle);
+            const testY = this.pos.y + distanceToWall * Math.sin(rayAngle);
+
+            const testAngle = Math.atan2(testY - midY, testX - midX);
+
+            if (testAngle >= -Math.PI * 0.25 && testAngle < Math.PI * 0.25) {
+              sampleX = testY % 1;
+              hitY = true;
+            }
+            if (testAngle >= Math.PI / 4 && testAngle < Math.PI * 0.75) {
+              sampleX = testX % 1;
+              hitY = false;
+            }
+            if (testAngle < -Math.PI / 4 && testAngle >= -Math.PI * 0.75) {
+              sampleX = testX % 1;
+              hitY = false;
+            }
+            if (testAngle >= Math.PI * 0.75 || testAngle < -Math.PI * 0.75) {
+              sampleX = testY % 1;
+              hitY = true;
+            }
+
           }
         }
       }
@@ -143,7 +173,15 @@ export class AppComponent extends GameComponent implements AfterViewInit {
       const floor = this.height - ceiling;
       floorList.push(ceiling);
       this.renderer.fillStyle = this.getColorGradient(distanceToWall);
-      this.renderer.fillRect(this.worldCoord(x), ceiling, this.tileSize, floor - ceiling);
+      if (hitY) {
+        this.renderer.fillStyle = 'black';
+        this.renderer.fillRect(this.worldCoord(x), ceiling, this.tileSize, floor - ceiling);
+        this.renderer.globalAlpha = 0.5;
+      }
+
+      const ratio = this.wallTexture.offsetWidth / this.nTiles;
+      this.renderer.drawImage(this.wallTexture, this.wallTexture.offsetWidth * sampleX, 0, ratio, this.wallTexture.offsetHeight, this.worldCoord(x), ceiling, this.tileSize, floor - ceiling);
+      this.renderer.globalAlpha = 1;
     }
 
     this.sprites.sort((sp1, sp2) => {
@@ -203,19 +241,29 @@ export class AppComponent extends GameComponent implements AfterViewInit {
   }
 
   private drawMap() {
+    this.renderer.fillStyle = 'white';
     this.renderer.font = '18px Arial';
     this.map.forEach((row, i) => {
-      this.renderer.fillText(row.join(''), 1, 20 * (i + 1));
+      row.forEach((char, j) => {
+        if (char > 0) {
+          this.renderer.fillStyle = 'brown';
+        } else {
+          this.renderer.fillStyle = 'white';
+        }
+        this.renderer.fillText(char + '', 9 * j, 20 * (i + 1));
+      })
     });
     let px = 9 * this.pos.x;
     let py = 20 * this.pos.y;
-    this.renderer.fillStyle = '#00ff00';
+    this.renderer.fillStyle = '#ffaaaff00';
     this.renderer.fillText('P', 9 * this.pos.x, 20 * this.pos.y);
     this.sprites.forEach(sprite => {
       this.renderer.fillText('E', 9 * sprite.x, 20 * sprite.y);
     })
     this.renderer.strokeStyle = '#00ff00'
     this.renderer.fillStyle = '#ff0000';
+    const oldLine = this.renderer.lineWidth;
+    this.renderer.lineWidth = 5;
     px += 4;
     py -= 4;
 
@@ -228,5 +276,6 @@ export class AppComponent extends GameComponent implements AfterViewInit {
     this.renderer.lineTo(px, py);
     this.renderer.lineTo(px + 60 * Math.cos(this.pAngle), py + 60 * Math.sin(this.pAngle))
     this.renderer.stroke();
+    this.renderer.lineWidth = oldLine;
   }
 }
