@@ -3,7 +3,6 @@ import { GameContainerDirective } from './game-container.directive';
 import { CanvasComponent } from '../canvas/canvas.component';
 import { Subject } from 'rxjs';
 import { GameLoop } from './game-loop';
-import { el } from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-game',
@@ -16,6 +15,8 @@ export class GameComponent implements OnInit {
   height;
 
   canvas;
+  renderer;
+
   gameLoop: GameLoop;
   onCreate$ = new Subject();
   onUpdate$ = new Subject();
@@ -23,7 +24,7 @@ export class GameComponent implements OnInit {
   @ViewChild(GameContainerDirective)
   gameContainer;
 
-  constructor(private injector: Injector, private resolver: ComponentFactoryResolver) { }
+  constructor(public resolver: ComponentFactoryResolver) { }
 
   public construct(width, height, fps = 30) {
    this.width = width;
@@ -31,15 +32,18 @@ export class GameComponent implements OnInit {
 
    if (this.gameContainer) {
      const factory = this.resolver.resolveComponentFactory(CanvasComponent);
-     this.canvas = factory.create(this.injector);
+     this.canvas = factory.create(this.gameContainer.viewContainerRef);
      this.canvas.instance.width = width;
      this.canvas.instance.height = height;
      this.gameContainer.ref.insert(this.canvas.hostView);
+     this.renderer = this.canvas.instance.getContext('2d');
      this.gameLoop = new GameLoop();
-     this.onCreate$.next();
-     this.gameLoop.start((elapsedTime) => {
-       this.onUpdate$.next(elapsedTime);
-     }, fps);
+     setTimeout(() => {
+       this.onCreate$.next();
+       this.gameLoop.start((elapsedTime) => {
+         this.onUpdate$.next(elapsedTime);
+       }, fps);
+     }, 1);
    } else {
      alert('Err: Cannot create cavas, game container missing!');
    }
