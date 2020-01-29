@@ -8,7 +8,7 @@ import { MapManagerService } from '../../../game-engine/map-manager.service';
 })
 export class MapEditorComponent implements OnInit {
 
-  private map;
+  map;
   mousedown = false;
   mapKey = 'level1';
 
