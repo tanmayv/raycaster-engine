@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PixelArrayTestComponent } from './pixel-array-test.component';
+import { GameDemoComponent } from './game-demo.component';
 
-describe('PixelArrayTestComponent', () => {
-  let component: PixelArrayTestComponent;
-  let fixture: ComponentFixture<PixelArrayTestComponent>;
+describe('GameDemoComponent', () => {
+  let component: GameDemoComponent;
+  let fixture: ComponentFixture<GameDemoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PixelArrayTestComponent ]
+      declarations: [ GameDemoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PixelArrayTestComponent);
+    fixture = TestBed.createComponent(GameDemoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

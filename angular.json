@@ -58,18 +58,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "component-test:build"
+            "browserTarget": "raycaster-engine:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "component-test:build:production"
+              "browserTarget": "raycaster-engine:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "component-test:build"
+            "browserTarget": "raycaster-engine:build"
           }
         },
         "test": {
@@ -103,7 +103,7 @@
         }
       }
     },
-    "component-test-e2e": {
+    "raycaster-engine-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -112,11 +112,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "component-test:serve"
+            "devServerTarget": "raycaster-engine:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "component-test:serve:production"
+              "devServerTarget": "raycaster-engine:serve:production"
             }
           }
         },
@@ -132,5 +132,5 @@
       }
     }
   },
-  "defaultProject": "component-test"
+  "defaultProject": "raycaster-engine"
 }

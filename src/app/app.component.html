@@ -1,9 +1,25 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div class="container">
-  <div appGameContainer></div>
+
+<div class='container' fxLayout="column" fxLayoutAlign="center">
+  <ibm-breadcrumb [noTrailingSlash]="true" fxLayoutAlign="center">
+    <ibm-breadcrumb-item [routerLink]="['/']">
+      About
+    </ibm-breadcrumb-item>
+    <ibm-breadcrumb-item [routerLink]="['/edit']">
+      Map Editor
+    </ibm-breadcrumb-item>
+    <ibm-breadcrumb-item [routerLink]="['/demo']">
+      Demo
+    </ibm-breadcrumb-item>
+  </ibm-breadcrumb>
+  <router-outlet></router-outlet>
 </div>
-<img id="barrel" src="../assets/img/barrel.png" />
-<img id="greenlight" src="../assets/img/greenlight.png" />
-<img id="greystone" src="../assets/img/greystone.png" />
+
+<!--<div class="container">-->
+<!--  <div appGameContainer></div>-->
+<!--</div>-->
+<!--<app-map-editor [mapKey]="keyForEditor"></app-map-editor>-->
+<!--<img id="barrel" src="../assets/img/barrel.png" />-->
+<!--<img id="greenlight" src="../assets/img/greenlight.png" />-->
+<!--<img id="greystone" src="../assets/img/greystone.png" />-->
 
 <!--<app-pixel-array-test></app-pixel-array-test>-->
