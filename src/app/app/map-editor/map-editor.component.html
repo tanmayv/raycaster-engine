@@ -1,0 +1,11 @@
+<ibm-tile fxLayout='column' fxLayoutGap="15px" (mousedown)="mousedown = true;" (mouseup)="mousedown = false;">
+  <div fxLayout="row" fxLayoutAlign="space-between center" >
+    <p>Click on a tile to toggle it between obstacle and floor</p>
+    <button ibmButton="primary" [routerLink]="['/demo']">See demo</button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="center">
+    <div fxLayout='row' *ngFor="let row of map; let y = index">
+      <div class="tile" [ngClass]="{'wall' : tile > 0}" *ngFor="let tile of row; let x = index" (mouseup)="onMouseOverTile(x,y)" (mouseout)="onMouseOverTile(x,y)"></div>
+    </div>
+  </div>
+</ibm-tile>

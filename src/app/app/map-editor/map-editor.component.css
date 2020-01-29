@@ -1,0 +1,10 @@
+.tile {
+  padding: 15px;
+  cursor: pointer;
+  background: red;
+  margin: 2px;
+}
+
+.wall {
+  background: url("~src/assets/img/greystone.png");
+}
