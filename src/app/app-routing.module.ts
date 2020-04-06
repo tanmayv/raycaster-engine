@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MapEditorComponent } from './app/map-editor/map-editor.component';
 import { GameDemoComponent } from './app/game-demo/game-demo.component';
-import { IntroComponent } from './app/intro/intro.component';
+import { AuctionListComponent } from './app/auction-list/auction-list.component';
+import { AuctionViewComponent } from './app/auction-view/auction-view.component';
+import { HomeComponent } from './app/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: IntroComponent,
+    component: HomeComponent,
   },
   {
     path: 'demo',
@@ -16,6 +18,10 @@ const routes: Routes = [
   {
     path: 'edit',
     component: MapEditorComponent
+  },
+  {
+    path: 'auction',
+    component: AuctionViewComponent
   }
 ];
 
