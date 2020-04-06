@@ -1,0 +1,98 @@
+<div class="modal-container" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap.gt-xs="50px">
+  <div></div>
+  <ibm-tile>
+    <div>
+      <h4>Provide your personal details before submitting a bid.</h4>
+      <ibm-label
+        [invalid]="!user.name"
+        invalidText="Name should not be empty">
+        Full name
+        <input
+          [(ngModel)]="user.name"
+          ibmText
+          [invalid]="false"
+          [disabled]="false">
+      </ibm-label>
+      <div fxLayoutAlign="center center" fxLayout="row" fxLayoutGap="10px">
+        <ibm-label
+          [invalid]="!user.phone && !user.email"
+          invalidText="Name should not be empty">
+          Phone no.
+          <input
+            [(ngModel)]="user.phone"
+            ibmText
+            [disabled]="false">
+        </ibm-label>
+        <div>Or</div>
+        <ibm-label
+          [invalid]="!user.phone && !user.email"
+          invalidText="Name should not be empty">
+          Address
+          <input
+            [(ngModel)]="user.email"
+            ibmText
+            [invalid]="false"
+            [disabled]="false">
+        </ibm-label>
+      </div>
+
+      <ibm-label
+        [invalid]="!user.addressLine1"
+        invalidText="Address line 1 should not be empty">
+        Address Line 1
+        <input
+          [(ngModel)]="user.addressLine1"
+          ibmText
+          [invalid]="false"
+          [disabled]="false">
+      </ibm-label>
+      <ibm-label>
+        Address Line 2
+        <input
+          [(ngModel)]="user.addressLine2"
+          ibmText
+          [invalid]="false"
+          [disabled]="false">
+      </ibm-label>
+      <div fxLayoutAlign="center center" fxLayout="row" fxLayoutGap="10px">
+        <ibm-label
+          [invalid]="!user.city"
+          invalidText="City should not be empty">
+          City
+          <input
+            [(ngModel)]="user.city"
+            ibmText
+            [invalid]="false"
+            [disabled]="false">
+        </ibm-label>
+        <ibm-label
+          [invalid]="!user.state"
+          invalidText="State should not be empty">
+          State
+          <input
+            [(ngModel)]="user.state"
+            ibmText
+            [invalid]="false"
+            [disabled]="false">
+        </ibm-label>
+        <ibm-label
+          [invalid]="!user.pincode"
+          invalidText="Name should not be empty">
+          Pincode
+          <input
+            [(ngModel)]="user.pincode"
+            ibmText
+            [invalid]="false"
+            [disabled]="false">
+        </ibm-label>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button fxFlex="50" ibmButton="secondary" (click)="cancel.emit(user)">Cancel</button>
+        <button fxFlex="50" ibmButton="primary" (click)="submit.emit(user)"
+        [disabled]="!User.isValid(user)"
+        >Submit</button>
+      </div>
+    </div>
+    <div></div>
+  </ibm-tile>
+</div>

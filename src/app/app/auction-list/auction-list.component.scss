@@ -1,0 +1,27 @@
+.auction-list {
+  max-width: 900px;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 90vw;
+    padding: 10px;
+  }
+
+  app-auction-tile {
+    margin: 10px 0px;
+  }
+
+
+}
+
+@media only screen and (max-width: 1400px) {
+  .container {
+    width: 90vw;
+  }
+}
+
+app-auction-tile {
+  margin: 8px;
+}

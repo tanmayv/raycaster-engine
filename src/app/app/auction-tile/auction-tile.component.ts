@@ -4,7 +4,7 @@ import { Auction } from './auction';
 @Component({
   selector: 'app-auction-tile',
   templateUrl: './auction-tile.component.html',
-  styleUrls: ['./auction-tile.component.css']
+  styleUrls: ['./auction-tile.component.scss']
 })
 export class AuctionTileComponent implements OnInit {
 

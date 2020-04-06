@@ -15,6 +15,7 @@ import { AuctionTileComponent } from './app/auction-tile/auction-tile.component'
 import { AuctionViewComponent } from './app/auction-view/auction-view.component';
 import { HomeComponent } from './app/home/home.component';
 import { FormsModule } from '@angular/forms';
+import { UserInputeComponent } from './app/user-inpute/user-inpute.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     AuctionListComponent,
     AuctionTileComponent,
     AuctionViewComponent,
-    HomeComponent
+    HomeComponent,
+    UserInputeComponent
   ],
   imports: [
     BrowserModule,

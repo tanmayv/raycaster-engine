@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuctionService } from '../auction.service';
 import { Auction } from '../auction-tile/auction';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { User, UserService } from '../user.service';
 
 @Component({
   selector: 'app-auction-view',
@@ -13,6 +13,8 @@ export class AuctionViewComponent implements OnInit {
 
   auction: Auction;
   bid: number = 0;
+  showUserModal = false;
+
   constructor(private auctionService: AuctionService, private route: ActivatedRoute,
               private router: Router, private userService: UserService) { }
 
@@ -32,10 +34,17 @@ export class AuctionViewComponent implements OnInit {
   }
 
   submit() {
-    const user = this.userService.getCurrentUser();
-    if (!user) {
+    const user: User = this.userService.getCurrentUser();
 
+    if (!(user && User.isValid(user))) {
+      this.showUserModal = true;
     }
+  }
+  onUserInfo(user, callApi) {
+    if (callApi) {
+      this.userService.createNewUser(user);
+    }
+    this.showUserModal = false;
   }
 
 }

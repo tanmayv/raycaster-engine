@@ -1,11 +1,11 @@
 <ibm-tile>
   <div class="container">
-    <div fxLayoutAlign="start" fxLayoutGap="20px">
-      <div class="photo" style="position: relative">
+    <div fxLayoutAlign="start" fxLayoutGap="20px"  fxLayout="column" fxLayout.gt-xs="row">
+      <div class="photo" style="position: relative" fxFlex.gt-xs="50">
         <img [src]="auction.image" alt="">
         <ibm-tag type="green" *ngIf="true" style="right: 10px; top: 10px; position: absolute">bid offered</ibm-tag>
       </div>
-      <div fxLayoutAlign="space-between " fxLayout="column">
+      <div fxLayoutAlign="space-between " fxLayout="column" fxFlex.gt-xs="50">
         <div fxLayout="column" fxLayoutGap="20px">
           <h2 class="title">{{auction.title}}</h2>
           <h4 class="description">{{auction.description}}</h4>
@@ -31,3 +31,5 @@
     </div>
   </div>
 </ibm-tile>
+<app-user-inpute *ngIf="showUserModal" (cancel)="onUserInfo($event, false)"
+                 (submit)="onUserInfo($event, true)"></app-user-inpute>

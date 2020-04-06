@@ -1,0 +1,23 @@
+:host {
+  .modal-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.5);
+    overflow: scroll;
+  }
+
+  ibm-tile {
+    height: fit-content;
+  }
+  ibm-label {
+    margin-top: 20px;
+  }
+
+  button {
+    margin-top: 30px;
+  }
+
+}

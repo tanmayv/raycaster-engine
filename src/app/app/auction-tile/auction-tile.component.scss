@@ -1,0 +1,12 @@
+  :host ::ng-deep .bx--tile {
+    background: white;
+  }
+  :host {
+    .photo {
+      width: 90vw ;
+      overflow: hidden;
+      img {
+        width: 100% !important;
+      }
+    }
+  }

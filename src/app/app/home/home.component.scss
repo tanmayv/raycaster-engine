@@ -1,6 +1,55 @@
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100vw;
+    padding: 10px;
+  }
+
+
+  .heading {
+    font-size: 16px !important;
+  }
+
+  .sub-heading {
+    font-size: 28px !important;
+  }
+
+  .content {
+    font-size: 14px !important;
+  }
+
+  .splash-content {
+    button {
+      width: 100%;
+    }
+  }
+
+  .about-author {
+    .photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 100px;
+    }
+    h2 {
+      color: black;
+    }
+    div {
+      margin: 10px 10px;
+      line-height: 18px;
+      color: black;
+      width: 90vw !important;
+    }
+  }
+
+}
+
+@media only screen and (max-width: 1400px) {
+  .container {
+    width: 90vw;
+  }
+}
 .container {
   display: table;
-  width: 1300px;
+
   max-width: 1300px;
   margin-right: auto;
   margin-left: auto;
@@ -36,7 +85,7 @@
 }
 
 .router-content {
-  width: 100vw;
+  width: 100%;
 }
 
 .about-author {
@@ -55,6 +104,15 @@
     width: 600px;
   }
 }
+
+.screen1 {
+  >* {
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgba(0,0,0, 0.1);
+  }
+
+}
 .background {
   width: 100vw;
   height: 100vh;
@@ -69,3 +127,8 @@ body {
   scroll-behavior: smooth;
 }
 
+:host {
+  ibm-tile {
+    box-shadow: 5px 5px #888888;
+  }
+}

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-auction-list',
   templateUrl: './auction-list.component.html',
-  styleUrls: ['./auction-list.component.css']
+  styleUrls: ['./auction-list.component.scss']
 })
 export class AuctionListComponent implements OnInit {
 

@@ -10,6 +10,10 @@ export class User {
   pincode: string;
   city: string;
   state: string;
+  
+  public static isValid = (user) => {
+    return (user.name && user.addressLine1 && user.state && user.city && user.pincode && (user.email || user.phone));
+  }
 }
 
 @Injectable({
@@ -21,8 +25,8 @@ export class UserService {
   constructor() { }
 
   getCurrentUser() {
-    const userString = localStorage.getItem('user');
-    return userString && userString !== 'undefined' ? JSON.parse(userString) : undefined;
+    const thisString = localStorage.getItem('user');
+    return thisString && thisString !== 'undefined' ? JSON.parse(thisString) : undefined;
   }
 
   createNewUser(user) {

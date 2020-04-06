@@ -7,8 +7,11 @@
 }
 .container {
   display: table;
-  width: 1300px;
   max-width: 1300px;
   margin-right: auto;
   margin-left: auto;
+}
+
+img {
+  width: 100%;
 }
