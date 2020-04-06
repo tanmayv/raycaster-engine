@@ -1,0 +1,14 @@
+:host ::ng-deep .bx--tile {
+  background: white;
+}
+
+.bid-input {
+  width: 300px;
+}
+.container {
+  display: table;
+  width: 1300px;
+  max-width: 1300px;
+  margin-right: auto;
+  margin-left: auto;
+}

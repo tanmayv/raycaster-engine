@@ -1,0 +1,48 @@
+<div class="parent">
+  <div class="background" #background></div>
+  <div class="splash-content screen1" fxLayoutAlign="center center">
+    <div class="container">
+      <div class="heading">Colors Against</div>
+      <div class="sub-heading">Covid19</div>
+      <div class="content">
+        The purpose of this auction is to raise funds for Covid19 relief. It is a non profit auction and the amount would go to the following trusts:
+        <ul>
+          <li>PM Care Fund (https://www.pmindia.gov.in/en/about-pm-cares-fund/)</li>
+          <li>Rahat Goonj (https://goonj.org/support-covid-19-affected/)</li>
+          <li>Trust of your choice working for Covid! (can be even located outside India, incase of bidders from abroad)</li>
+        </ul>
+      </div>
+      <div fxLayoutGap="20px">
+        <button ibmButton="primary" (click)="scrollTo(2)">View all items</button>
+        <button ibmButton="secondary" (click)="scrollTo(1)">About Kamayani</button>
+      </div>
+    </div>
+  </div>
+  <div class="splash-content screen2" fxLayoutAlign="center center">
+    <ibm-tile class="about-author" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <div class="photo">
+      </div>
+      <h2>
+        Kamayani Sharma
+      </h2>
+      <div>I am an amateur artist who eschews showcasing paintings publicly. My paintings are majorly driven by my mood of the hour and memories from the past. I personally feel melancholy engenders aesthetic richness to art and life. Despite my several attempts of refrainment, the blues, therefore, always leave a shade in my art work.
+        The sole purpose of this auction is to raise funds to deal with the distress caused by COVID19 and will be a non profit auction. For my friends located outside India, the contribution would go to your respective countries.</div>
+    </ibm-tile>
+  </div>
+  <ibm-tile>
+    <div  fxLayout="column" fxLayoutAlign="center center">
+      <app-auction-list></app-auction-list>
+    </div>
+  </ibm-tile>
+
+  <!--<div class="container">-->
+  <!--  <div appGameContainer></div>-->
+  <!--</div>-->
+  <!--<app-map-editor [mapKey]="keyForEditor"></app-map-editor>-->
+  <!--<img id="barrel" src="../assets/img/barrel.png" />-->
+  <!--<img id="greenlight" src="../assets/img/greenlight.png" />-->
+  <!--<img id="greystone" src="../assets/img/greystone.png" />-->
+
+  <!--<app-pixel-array-test></app-pixel-array-test>-->
+
+</div>

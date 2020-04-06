@@ -1,0 +1,10 @@
+.auction-list {
+  width: 900px;
+  flex-wrap: wrap;
+
+
+}
+
+app-auction-tile {
+  margin: 8px;
+}
