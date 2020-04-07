@@ -9,7 +9,7 @@ export class ConfigService {
 
   constructor() { }
 
-  getAuctionsUrl(id: string) {
+  getAuctionsUrl(id?: string) {
     return this.buildUrl('auctionItem' + (id ? ('?id=' + id) : ''));
   }
 
@@ -17,7 +17,7 @@ export class ConfigService {
     return this.buildUrl('bid');
   }
 
-  getUserUrl(username) {
+  getUserUrl(username?) {
     return this.buildUrl('user' + (username ? ('?username=' + username) : ''));
   }
 

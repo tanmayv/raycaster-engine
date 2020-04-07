@@ -13,9 +13,9 @@ export class AuctionService {
 
   constructor(private configService: ConfigService, private http: HttpClient) { }
 
-  getAuctionList(id?): Observable<any[]> {
+  getAuctionList(id?): Observable<any[]> | Observable<any> {
     console.log('getting auctions', this.configService.getAuctionsUrl(id));
-    return this.http.get<any[]>(this.configService.getAuctionsUrl(id));
+    return this.http.get<any[] | any>(this.configService.getAuctionsUrl(id));
   }
 
   submitBid(auctionId: string, amount: number) {
