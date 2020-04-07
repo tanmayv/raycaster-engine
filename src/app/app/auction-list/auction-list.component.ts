@@ -16,9 +16,9 @@ export class AuctionListComponent implements OnInit {
     this.auctionService.getAuctionList().subscribe((list) => this.auctions = list);
   }
 
-  viewAuction(i) {
-    this.auctionService.auctionIndex = i;
-    this.router.navigateByUrl('auction?id=' + this.auctions[i].id);
+  viewAuction(auction) {
+    this.auctionService.currentAuction = auction;
+    this.router.navigateByUrl('auction?id=' + auction.id);
   }
 
 }

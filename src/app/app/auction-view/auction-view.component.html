@@ -2,7 +2,7 @@
   <div class="container">
     <div fxLayoutAlign="start" fxLayoutGap="20px"  fxLayout="column" fxLayout.gt-xs="row">
       <div class="photo" style="position: relative" fxFlex.gt-xs="50">
-        <img [src]="auction.image" alt="">
+        <img [src]="auction.imageUrl" alt="">
         <ibm-tag type="green" *ngIf="true" style="right: 10px; top: 10px; position: absolute">bid offered</ibm-tag>
       </div>
       <div fxLayoutAlign="space-between " fxLayout="column" fxFlex.gt-xs="50">
@@ -11,7 +11,8 @@
           <h4 class="description">{{auction.description}}</h4>
         </div>
         <div fxLayout="column" fxLayoutGap="20px">
-          <div>Total bids: {{auction.totalBids}}</div>
+          <div>Starting bid: Rs. {{auction.minPrice || 0}}</div>
+          <div>Total bids: {{auction.totalBids || 0}}</div>
           <div fxLayoutAlign="start end" fxLayoutGap="50px" fxLayout="row">
             <ibm-label
               [invalid]="false"
@@ -24,7 +25,7 @@
                 [disabled]="false"
                 [placeholder]="0">
             </ibm-label>
-            <button ibmButton="primary" class="submit-button" [disabled]="bid <= 0" (click)="submit()">Submit bid</button>
+            <button ibmButton="primary" class="submit-button" [disabled]="bid <= auction.minPrice" (click)="submit()">Submit bid</button>
           </div>
         </div>
       </div>

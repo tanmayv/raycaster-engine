@@ -12,6 +12,7 @@
   ibm-tile {
     height: fit-content;
   }
+
   ibm-label {
     margin-top: 20px;
   }
@@ -20,4 +21,10 @@
     margin-top: 30px;
   }
 
+  @media only screen and (max-width: 600px) {
+    .modal-container {
+      background: white;
+    }
+
+  }
 }

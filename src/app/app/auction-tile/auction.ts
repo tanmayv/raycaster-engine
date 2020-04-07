@@ -1,6 +1,6 @@
 export class Auction {
   id: string;
-  image: string;
+  imageUrl: string;
   title: string;
   description: string;
   totalBids: number;

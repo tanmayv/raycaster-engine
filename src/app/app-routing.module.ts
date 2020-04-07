@@ -2,26 +2,30 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MapEditorComponent } from './app/map-editor/map-editor.component';
 import { GameDemoComponent } from './app/game-demo/game-demo.component';
-import { AuctionListComponent } from './app/auction-list/auction-list.component';
 import { AuctionViewComponent } from './app/auction-view/auction-view.component';
 import { HomeComponent } from './app/home/home.component';
+import { GuardingService } from './app/guarding.service';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [GuardingService]
   },
   {
     path: 'demo',
-    component: GameDemoComponent
+    component: GameDemoComponent,
+    canActivate: [GuardingService]
   },
   {
     path: 'edit',
-    component: MapEditorComponent
+    component: MapEditorComponent,
+    canActivate: [GuardingService]
   },
   {
     path: 'auction',
-    component: AuctionViewComponent
+    component: AuctionViewComponent,
+    canActivate: [GuardingService]
   }
 ];
 

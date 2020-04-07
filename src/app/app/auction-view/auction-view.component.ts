@@ -12,21 +12,24 @@ import { User, UserService } from '../user.service';
 export class AuctionViewComponent implements OnInit {
 
   auction: Auction;
-  bid: number = 0;
+  bid = 0;
   showUserModal = false;
 
   constructor(private auctionService: AuctionService, private route: ActivatedRoute,
               private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.auction = this.auctionService.getCurrentAuction() as Auction;
+    this.auction = this.auctionService.currentAuction as Auction;
     console.log(this.auction);
     this.route.queryParamMap.subscribe((queryMap) => {
       if (queryMap.has('id')) {
         const id = queryMap.get('id');
         if (this.auction && !this.auction.id) {
           this.router.navigateByUrl('');
+        } else {
+          this.auctionService.getAuctionList(id).subscribe((auction) => this.auction = auction);
         }
+
       } else {
         this.router.navigateByUrl('');
       }
@@ -34,15 +37,22 @@ export class AuctionViewComponent implements OnInit {
   }
 
   submit() {
-    const user: User = this.userService.getCurrentUser();
-
-    if (!(user && User.isValid(user))) {
-      this.showUserModal = true;
-    }
+    this.userService.getCurrentUser().subscribe((user) => {
+      if (!(user && User.isValid(user))) {
+        this.showUserModal = true;
+      } else {
+        this.auctionService.submitBid(this.auction.id, this.bid).subscribe((bidResponse) => {
+          console.log(bidResponse);
+        });
+      }
+    });
   }
+
   onUserInfo(user, callApi) {
     if (callApi) {
-      this.userService.createNewUser(user);
+      this.userService.createNewUser(user).subscribe((userResponse) => {
+        alert(JSON.stringify(userResponse));
+      });
     }
     this.showUserModal = false;
   }
