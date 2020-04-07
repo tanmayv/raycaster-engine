@@ -15,6 +15,9 @@ import { AuctionTileComponent } from './app/auction-tile/auction-tile.component'
 import { AuctionViewComponent } from './app/auction-view/auction-view.component';
 import { HomeComponent } from './app/home/home.component';
 import { FormsModule } from '@angular/forms';
+import { UserInputeComponent } from './app/user-inpute/user-inpute.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptorService } from './app/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     AuctionListComponent,
     AuctionTileComponent,
     AuctionViewComponent,
-    HomeComponent
+    HomeComponent,
+    UserInputeComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +37,7 @@ import { FormsModule } from '@angular/forms';
     GameEngineModule,
     ButtonModule,
     TilesModule,
+    HttpClientModule,
     RouterModule,
     BreadcrumbModule,
     AppRoutingModule,
@@ -40,7 +45,9 @@ import { FormsModule } from '@angular/forms';
     TagModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

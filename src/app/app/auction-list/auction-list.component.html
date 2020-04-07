@@ -1,0 +1,5 @@
+<div class="container">
+  <div class="auction-list" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+    <app-auction-tile *ngFor="let tile of auctions; let i = index" [auction]="tile" (bidClick)="viewAuction(tile)"></app-auction-tile>
+  </div>
+</div>

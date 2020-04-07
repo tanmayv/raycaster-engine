@@ -1,0 +1,36 @@
+<ibm-tile>
+  <div class="container">
+    <div fxLayoutAlign="start" fxLayoutGap="20px"  fxLayout="column" fxLayout.gt-xs="row">
+      <div class="photo" style="position: relative" fxFlex.gt-xs="50">
+        <img [src]="auction.imageUrl" alt="">
+        <ibm-tag type="green" *ngIf="true" style="right: 10px; top: 10px; position: absolute">bid offered</ibm-tag>
+      </div>
+      <div fxLayoutAlign="space-between " fxLayout="column" fxFlex.gt-xs="50">
+        <div fxLayout="column" fxLayoutGap="20px">
+          <h2 class="title">{{auction.title}}</h2>
+          <h4 class="description">{{auction.description}}</h4>
+        </div>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div>Starting bid: Rs. {{auction.minPrice || 0}}</div>
+          <div>Total bids: {{auction.totalBids || 0}}</div>
+          <div fxLayoutAlign="start end" fxLayoutGap="50px" fxLayout="row">
+            <ibm-label
+              [invalid]="false"
+              invalidText="Your bid should be more than min amount.">
+              Enter your bid in Rs.
+              <input
+                [(ngModel)]="bid"
+                ibmText
+                [invalid]="false"
+                [disabled]="false"
+                [placeholder]="0">
+            </ibm-label>
+            <button ibmButton="primary" class="submit-button" [disabled]="bid <= auction.minPrice" (click)="submit()">Submit bid</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ibm-tile>
+<app-user-inpute *ngIf="showUserModal" (cancel)="onUserInfo($event, false)"
+                 (submit)="onUserInfo($event, true)"></app-user-inpute>

@@ -1,0 +1,18 @@
+<div class="container">
+  <ibm-tile>
+    <div fxLayout="column" fxLayoutAlign="space-between" style="height: 100%">
+      <div class="photo" fxLayout="column" fxLayoutAlign="center" fxFlex="auto">
+        <img [src]="auction.imageUrl" alt="">
+      </div>
+      <div>
+        <h3 class="title">
+          {{ auction.title }}
+        </h3>
+        <div fxLayoutAlign="center center">
+          <h4 fxFlex="auto">Rs {{auction.minPrice || 0}}</h4>
+          <button ibmButton="primary" (click)="viewAuction()"><strong>Bid</strong></button>
+        </div>
+      </div>
+    </div>
+  </ibm-tile>
+</div>
